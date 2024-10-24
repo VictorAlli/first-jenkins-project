@@ -1,0 +1,90 @@
+import { test } from '@playwright/test';
+
+test.describe('Test Group', () => {
+
+    test.beforeEach(async ({ page }) => { 
+        await page.goto("https://practice.cydeo.com/");
+   });
+
+    test.afterEach(async ({ page }) => { 
+       
+   });
+
+  test('Check() checks the radio buttons and checkboxes if they havnt been checked yet', async ({ page }) => {
+    
+    let checkboxesLink = page.locator("text='Checkboxes'");
+    await checkboxesLink.click();
+
+    let checkBox1 = page.locator("#box1");
+
+    await checkBox1.check();
+
+
+  });
+
+  test('unchecked() unchecks the radio buttons and checkboxes if they havnt been unchecked yet', async ({ page }) => {
+    let checkboxesLink = page.locator("text='Checkboxes'");
+    await checkboxesLink.click();
+
+    let checkBox2 = page.locator("#box2");
+
+    await checkBox2.uncheck();
+
+  });
+
+  test('selectOption() used for dropdowns', async ({ page }) => {
+    
+    page.locator("text='Dropdown'").click();
+
+    let simpleDropDown =page.locator("//select[@id='dropdown']");
+    //if you like you can try to handle other dropdowns in the page
+
+
+    // select by value
+   // await simpleDropDown.selectOption("1");
+
+   // select by visible text
+   // await simpleDropDown.selectOption( { label: "Option 1" } );
+
+    // select by index
+    await simpleDropDown.selectOption( { index: 2 } );
+
+
+  });
+
+
+  test('innerText() retrives the visible text', async ({ page }) => {
+
+     let headerElement = page.locator("//span[@class='h1y']");
+
+     let actualText = await headerElement.innerText();
+
+     let fullText = await headerElement.textContent();
+
+     console.log(actualText);
+     console.log(fullText);
+    
+  });
+
+  
+   test('inputValue(): only works with <input>, <textarea>, <select>', async ({ page }) => {
+
+        let inputsLink = page.getByText("Inputs");
+
+    //    await inputsLink.scrollIntoViewIfNeeded();
+    //    await page.waitForTimeout(3000);
+
+        await inputsLink.click();
+
+        let inputBox = page.locator("//input[@type='number']");
+
+        await inputBox.fill("123");
+
+        let inputValue = await inputBox.inputValue();
+
+        console.log(inputValue);
+
+  });
+
+
+});
